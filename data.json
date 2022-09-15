@@ -34,5 +34,22 @@
     "price": 169,
     "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_673818-MLA46250587136_062021-F.webp",
     "id": 10
+  },
+  {
+    "title": "Teclado",
+    "price": 180,
+    "id": 11
+  },
+  {
+    "title": "Monitor Dell 27\"",
+    "price": 355,
+    "thumbnail": "http://imagenes.com/imagen-monitor.jpg",
+    "id": 15
+  },
+  {
+    "title": "ojotas",
+    "price": 290,
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_858852-MLU50909727393_072022-W.jpg",
+    "id": 16
   }
 ]

@@ -1,6 +1,6 @@
 const express = require('express');
 const fs = require('fs/promises')
-const Container = require('../Container');
+const Container = require('../../Container');
 
 const router = express.Router();
 const products = new Container('data.json');
@@ -35,43 +35,45 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-	if (req.body) {
-		try {
-			const { title, price, thumbnail } = req.body;
-			const newProduct = {
-				title,
-				price,
-				thumbnail
-			}
-			await products.save(newProduct);
-			res.json(newProduct);
-		} catch (error) {
-			console.log(error)
+	const { title, price, thumbnail } = req.body;
+	if (!title || !price || !thumbnail) {
+		return res.status(400).json({ success: false, error: 'Wrong body format' });
+	}
+	try {
+		const newProduct = {
+			title,
+			price: +price,
+			thumbnail
 		}
-	} else {
-		res.json({ error: "no es posible agregar un ítem vacío" })
+		await products.save(newProduct);
+		res.json(newProduct);
+	} catch (error) {
+		console.log(error)
 	}
 })
 
 router.put('/:id', async (req, res) => {
 	const { id } = req.params;
-	try {
-		if (req.body && await products.getById(id)) {
-			const { title, price, thumbnail } = req.body;
+	if (await products.getById(id)) {
+		const { title, price, thumbnail } = req.body;
+		if (!title || !price || !thumbnail) {
+			return res.status(400).json({ success: false, error: 'Wrong body format' });
+		}
+		try {
 			const newProduct = {
 				title,
-				price,
+				price: +price,
 				thumbnail
 			}
 			await products.save(newProduct);
 			res.json(newProduct);
 			await products.deleteById(id);
-		} else {
-			res.json({ error: "El formulario está vacío o no se encontró item con ese ID." })
 		}
-	}
-	catch (error) {
-		console.log(error)
+		catch (error) {
+			console.log(error)
+		}
+	} else {
+		res.json({ error: "Item not found." })
 	}
 
 })
